@@ -7,12 +7,13 @@ import { AppService } from './app.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      username: 'Admin',
+      username: 'root',
       password: 'Admin@2021',
       host: 'localhost',
       port: 3306,
       database: 'attachments',
-      synchronize: true
+      synchronize: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}']
     })
   ],
   controllers: [AppController],

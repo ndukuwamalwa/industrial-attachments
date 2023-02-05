@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Index,
+} from 'typeorm';
 
 @Entity('students')
 export class StudentEntity {
@@ -25,6 +32,12 @@ export class StudentEntity {
 
   @Column('timestamp')
   dateCreated: string;
+
+  @Column()
+  active: boolean;
+
+  @Column()
+  approved: boolean;
 }
 
 @Entity('supervisors')
@@ -52,6 +65,9 @@ export class SupervisorEntity {
 
   @Column('timestamp')
   dateCreated: string;
+
+  @Column()
+  active: boolean;
 }
 
 @Entity('users')
@@ -87,12 +103,20 @@ export class AttachmentEntity {
   id: number;
 
   @Column()
-  @ManyToOne(() => StudentEntity, t => t.id, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT', nullable: false })
+  @ManyToOne(() => StudentEntity, (t) => t.id, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+    nullable: false,
+  })
   @JoinColumn({ name: 'student' })
   student: number;
 
   @Column({ nullable: true })
-  @ManyToOne(() => SupervisorEntity, t => t.id, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT', nullable: true })
+  @ManyToOne(() => SupervisorEntity, (t) => t.id, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+    nullable: true,
+  })
   @JoinColumn({ name: 'supervisor' })
   supervisor: number;
 
@@ -113,7 +137,13 @@ export class AttachmentEntity {
   industrySupervisorContact: string;
 
   @Column()
-  active: boolean;
+  status:
+    | 'NOT-ASSIGNED'
+    | 'ON-GOING'
+    | 'CANCELLED'
+    | 'NOT GRADED'
+    | 'AWAITING GRADING'
+    | 'COMPLETED';
 
   @Column({ type: 'double', nullable: true })
   score: number;
@@ -123,6 +153,12 @@ export class AttachmentEntity {
 
   @Column('timestamp')
   dateCreated: string;
+
+  @Column('timestamp')
+  dateUpdate: string;
+
+  @Column()
+  updatedBy: number;
 }
 
 @Entity('logbook')
@@ -131,7 +167,11 @@ export class LogbookEntity {
   id: number;
 
   @Column()
-  @ManyToOne(() => AttachmentEntity, t => t.id, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT', nullable: false })
+  @ManyToOne(() => AttachmentEntity, (t) => t.id, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+    nullable: false,
+  })
   @JoinColumn({ name: 'attachment' })
   attachment: number;
 
